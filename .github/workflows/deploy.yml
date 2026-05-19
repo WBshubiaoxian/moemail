@@ -34,11 +34,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      # 新增：强制使用 Wrangler 4
       - name: Setup Wrangler 4
-        run: |
-          echo "🔧 Installing latest Wrangler 4..."
-          pnpm dlx wrangler@4 --version
+        run: pnpm dlx wrangler@4 --version
 
       - name: Run deploy script
         env:
@@ -56,11 +53,9 @@ jobs:
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
         run: |
-          # 让后续所有 wrangler 命令都使用 v4
           export WRANGLER_VERSION=4
           pnpm dlx tsx scripts/deploy/index.ts
 
-      # Clean up
       - name: Post deployment cleanup
         run: |
           rm -f .env*.*
